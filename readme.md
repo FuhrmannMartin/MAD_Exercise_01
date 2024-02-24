@@ -9,17 +9,40 @@
 ## Questions
 ### Describe how Kotlin handles null safety. What are nullable types and non-null types in Kotlin? (0,5 points)
 
-<span style="color:blue">Provide your answer here! </span>
-> Note: you can also use code snippets to illustrate your answer. 
+Kotlin ensures null safety by making variables non-nullable by default.
+Non-null types are variables that can't hold null.
+Nullable types on the other hand are variables that can hold null.
 
-```kotlin 
-// example code snippet
-val a: String = "value" // non-null type
+When you declare a variable without specifying it as nullable, it's considered non-nullable:
+```kotlin
+var a: String = "value" // non-null type
+```
+
+In case a variable should be allowed to also hold null, this has to be explicitly
+specified by appending '?' to its type:
+```kotlin
+var a: String? = "value" // non-null type
+a = null
 ```
 
 ### What are lambda expressions and higher order functions in Kotlin? Why would you store a function inside a variable? (0,5 points)
 
-<span style="color:blue">Provide your answer here!</span>
+Lambda expressions are anonymous functions that do not have a specific name.
+In Kotlin they are defined in curly braces.
+
+Following function has two input arguments of type Integer and returns a Boolean value.
+```kotlin
+var bigger_than: (Int,Int) -> Boolean = {a, b -> a > b}
+```
+Higher-order functions are functions that take other functions as parameters or return functions.
+To be able to pass a function as an argument to a higher order function the function must be stored in a variable
+or the anonymous function can also be directly defined in the higher order function call.
+
+```kotlin
+fun checkBiggerThan(a: Int, b: Int, check: (Int,Int) -> Boolean): Unit {
+    println("Is $a bigger then $b: ${check(a,b)}")
+}
+```
 
 ### Provide a solution for the following number guessing game inside `App.kt`. (3 points)
 

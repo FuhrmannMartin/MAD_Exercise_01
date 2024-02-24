@@ -3,10 +3,25 @@
  */
 package at.ac.fhcampuswien
 
+import kotlin.random.Random
+
 class App {
     // Game logic for a number guessing game
     fun playNumberGame(digitsToGuess: Int = 4) {
-        //TODO: build a menu which calls the functions and works with the return values
+        val generatedNumber = generateRandomNonRepeatingNumber(digitsToGuess)
+
+        while (true) {
+            println("Guess the number:")
+            val input = readlnOrNull()
+            if (input != null) {
+                if (input.toInt() == generatedNumber) {
+                    println("Your guess is correct: Congratulations!")
+                    break
+                }
+                println(checkUserInputAgainstGeneratedNumber(input.toInt(), generatedNumber).toString())
+            }
+        }
+
     }
 
     /**
@@ -24,9 +39,19 @@ class App {
      * @throws IllegalArgumentException if the length is more than 9 or less than 1.
      */
     val generateRandomNonRepeatingNumber: (Int) -> Int = { length ->
-        //TODO implement the function
-        0   // return value is a placeholder
+        var res = ""
+
+        if (length in 1..9) {
+            while (res.length < length) {
+                val r = Random.nextInt(0, 9)
+                if (!res.contains(r.toString())) {
+                    res = res.plus(r.toString())
+                }
+            }
+            res.toInt()
+        } else {throw IllegalArgumentException("The length is more than 9 or less than 1.")}
     }
+
 
     /**
      * Compares the user's input integer against a generated number for a guessing game.
@@ -45,12 +70,24 @@ class App {
      * @throws IllegalArgumentException if the inputs do not have the same number of digits.
      */
     val checkUserInputAgainstGeneratedNumber: (Int, Int) -> CompareResult = { input, generatedNumber ->
-        //TODO implement the function
-        CompareResult(0, 0)   // return value is a placeholder
+        val i = input.toString()
+        val g = generatedNumber.toString()
+
+        if (i.length == g.length) {
+            val n = i.toSet().count { it in g }
+            val m = i.indices.count { i[it] == g[it] }
+
+            CompareResult(n, m)   // return value is a placeholder
+        } else {throw IllegalArgumentException("The length is more than 9 or less than 1.")}
     }
 }
 
 fun main() {
-    println("Hello World!")
-    // TODO: call the App.playNumberGame function with and without default arguments
+    val app = App()
+
+    println("How many digits do you want to guess?")
+    val userInput = readlnOrNull()
+
+    if (userInput.isNullOrEmpty()) app.playNumberGame() else app.playNumberGame(userInput.toInt())
+
 }
